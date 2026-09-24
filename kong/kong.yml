@@ -1,0 +1,12 @@
+_format_version: "3.0"
+
+services:
+
+  - name: demo-api
+    url: http://demo-api:80
+
+    routes:
+
+      - name: demo-route
+        paths:
+          - /api
