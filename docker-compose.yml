@@ -22,6 +22,71 @@ services:
       - "8001:8001"
 
   demo-api:
-    image: kennethreitz/httpbin
+    build:
+      context: ./api
     container_name: demo-api
     restart: unless-stopped
+
+    environment:
+      DATABASE_URL: postgresql://capstone:capstone@postgres:5432/healthcare
+
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: capstone
+      POSTGRES_PASSWORD: capstone
+      POSTGRES_DB: healthcare
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  keycloak:
+
+    image: quay.io/keycloak/keycloak:26.8.0
+    container_name: keycloak
+    restart: unless-stopped
+    volumes:
+      - keycloak-data:/opt/keycloak/data
+      - ./keycloak:/opt/keycloak/data/import:ro
+
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+
+    command:
+      - start-dev
+      - --import-realm
+
+    ports:
+      - "8080:8080"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  keycloak-data:
+  postgres-data:
+  grafana-data:
