@@ -1,0 +1,24 @@
+# Local credentials and raw realm exports
+.env
+.env.*
+!.env.example
+healthcare-realm.json
+keycloak/import/*.json
+keycloak-data-backup/
+**/*.db
+**/*.sqlite*
+**/*.sql
+**/*.pem
+**/*.key
+# Raw logs must be reviewed before publication
+evidence/raw/
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+Thumbs.db
+
+# Local session snapshots and editor backups
+session-backups/
+*.backup-*

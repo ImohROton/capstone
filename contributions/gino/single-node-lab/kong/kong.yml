@@ -1,0 +1,65 @@
+# Public key and consumer ID from Gino's tested lab; align with your imported realm.
+_format_version: '3.0'
+services:
+- name: demo-api
+  url: http://demo-api:5000
+  routes:
+  - name: demo-route
+    paths:
+    - /api
+    strip_path: true
+consumers:
+- username: doctor1
+  jwt_secrets:
+  - key: f0d61ed8-dd51-436a-b009-8064eab88f65
+    algorithm: RS256
+    secret: unused-for-rs256
+    rsa_public_key: '-----BEGIN PUBLIC KEY-----
+
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5Yi1ZkrBMJyMwZWvFtIpTJGmmM84FxkphZsgz/IrW4NMgMQkaAhtCVgaR62+4SkfIjJwdSA82fwSn6vjPaH536uaSBoXmDmZKK4hngODRmQWtvlvdQ3krk/qh6ap3ldwRMqxsgvleHRlOCDvDDjGynLPPddt7x/MBlZALc9tVn1OR3sfRRhM1LufdYmjVHmb8cvisbEvcFsxOF78s2aefQHTB1prAIB0WPGEF3aMUo1wRXNRgwzVgteADgUm3/qoDjdn+CQCqkpN0vbQtz08JSfpvYQmv24da2YdLM3fYQDIP0O8zOhdPlosDuXC2eizmBdC8Ilp/8gtwQoIgyOIWwIDAQAB
+
+      -----END PUBLIC KEY-----
+      '
+
+
+- username: itadmin1
+  jwt_secrets:
+  - key: 768b3edb-1bb2-49fb-bef0-9aee15621cfb
+    algorithm: RS256
+    secret: unused-for-rs256
+    rsa_public_key: '-----BEGIN PUBLIC KEY-----
+
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5Yi1ZkrBMJyMwZWvFtIpTJGmmM84FxkphZsgz/IrW4NMgMQkaAhtCVgaR62+4SkfIjJwdSA82fwSn6vjPaH536uaSBoXmDmZKK4hngODRmQWtvlvdQ3krk/qh6ap3ldwRMqxsgvleHRlOCDvDDjGynLPPddt7x/MBlZALc9tVn1OR3sfRRhM1LufdYmjVHmb8cvisbEvcFsxOF78s2aefQHTB1prAIB0WPGEF3aMUo1wRXNRgwzVgteADgUm3/qoDjdn+CQCqkpN0vbQtz08JSfpvYQmv24da2YdLM3fYQDIP0O8zOhdPlosDuXC2eizmBdC8Ilp/8gtwQoIgyOIWwIDAQAB
+
+      -----END PUBLIC KEY-----
+      '
+
+acls:
+- consumer: doctor1
+  group: doctor
+- consumer: itadmin1
+  group: it-admin
+plugins:
+- name: jwt
+  route: demo-route
+  config:
+    key_claim_name: sub
+    claims_to_verify:
+    - exp
+- name: acl
+  route: demo-route
+  config:
+    allow:
+    - doctor
+- name: rate-limiting
+  route: demo-route
+  config:
+    minute: 10
+    policy: local
+    limit_by: consumer
+- name: prometheus
+  config:
+    status_code_metrics: true
+    latency_metrics: true
+    bandwidth_metrics: true
+    per_consumer: true
