@@ -1,0 +1,15 @@
+HTTP/1.1 429 Too Many Requests
+Date: Thu, 22 Oct 2026 03:47:24 GMT
+Content-Type: application/json; charset=utf-8
+Connection: keep-alive
+X-RateLimit-Remaining-Minute: 0
+X-RateLimit-Limit-Minute: 10
+RateLimit-Remaining: 0
+RateLimit-Reset: 36
+Retry-After: 36
+RateLimit-Limit: 10
+Content-Length: 92
+X-Kong-Response-Latency: 7
+Server: kong/3.9.3
+X-Kong-Request-Id: 3e6c3b125436bf36bcb76b77209d645d
+

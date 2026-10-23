@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 267
+Connection: keep-alive
+X-RateLimit-Remaining-Minute: 5
+X-RateLimit-Limit-Minute: 10
+RateLimit-Remaining: 5
+RateLimit-Reset: 49
+RateLimit-Limit: 10
+Server: Werkzeug/3.1.9 Python/3.12.15
+Date: Thu, 22 Oct 2026 03:47:14 GMT
+X-Kong-Upstream-Latency: 6
+X-Kong-Proxy-Latency: 2716
+Via: 1.1 kong/3.9.3
+X-Kong-Request-Id: 25d4c352e3e2f4258f170521cbf52107
+
